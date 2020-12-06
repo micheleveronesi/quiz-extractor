@@ -1,7 +1,9 @@
 package controller;
 
 import model.CSVReader;
+import view.CLI;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -13,18 +15,18 @@ import java.util.List;
  * elaborate the answer sheet for the generated quiz
  * */
 public class Controller {
-    private final CSVReader csvFile;
-    private final List<Question> questions;
+    private CSVReader csvFile;
+    private List<Question> questions;
     private final EnumMap<Category, List<Question>> questionByCat;
+    private final CLI view;
 
-    private Controller(String filePath) {
-        csvFile = CSVReader.open(filePath);
-        questions = csvFile.read();
+    private Controller() {
         questionByCat = new EnumMap<Category, List<Question>>(Category.class);
+        view = new CLI(this);
     }
 
-    public static Controller start(String filePath) {
-        Controller c = new Controller(filePath);
+    public static Controller start() {
+        Controller c = new Controller();
         c.resetQuestionsEnumSet();
         return c;
     }
@@ -59,6 +61,15 @@ public class Controller {
         }
         resetQuestionsEnumSet();
         return questionSheet;
+    }
+    public boolean readFile(String filePath) {
+        try {
+            csvFile = CSVReader.open(filePath);
+        } catch(FileNotFoundException e){
+            return false;
+        }
+        questions = csvFile.read();
+        return true;
     }
 
     private void resetQuestionsEnumSet() {

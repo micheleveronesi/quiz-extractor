@@ -2,6 +2,7 @@ package model;
 import controller.Category;
 import controller.Question;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,7 +19,7 @@ public class CSVReader {
         this.reader = reader;
     }
 
-    public static CSVReader open(String filePath){
+    public static CSVReader open(String filePath) throws FileNotFoundException {
         Scanner sc = new Scanner(filePath);
         sc.useDelimiter(",");
         return new CSVReader(sc);
