@@ -1,3 +1,5 @@
+package controller;
+
 /**
  * CONTROLLER CLASS:
  * This class receive a data structure from the reader (model)

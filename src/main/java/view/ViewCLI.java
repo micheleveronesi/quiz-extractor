@@ -1,3 +1,5 @@
+package view;
+
 /**
  * VIEW CLASS:
  * This class manage the interaction with the user

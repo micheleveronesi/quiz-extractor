@@ -1,3 +1,5 @@
+package model;
+
 /**
  * MODEL CLASS
  * this class have to access data stored in a CSV files
