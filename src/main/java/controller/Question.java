@@ -30,5 +30,5 @@ public class Question {
     public Category getCategory() { return category; }
     public List<String> getAnswers() { return answers; }
     public String getCorrectAnswer() { return answers.get(correct); }
-
+    public int getIndexCorrectAnswer() { return correct; }
 }
