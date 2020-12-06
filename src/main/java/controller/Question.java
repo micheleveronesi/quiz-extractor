@@ -15,13 +15,20 @@ public class Question {
      *                 correct answer to that question
      * */
     private final String question;
+    private final Category category;
     private final List<String> answers;
     private final int correct;
 
-    public Question(String question, List<String> answers, int correct) {
+    public Question(String question, Category category, List<String> answers, int correct) {
         this.question = question;
+        this.category = category;
         this.answers = answers;
         this.correct = correct;
     }
+
+    public String getQuestion() { return question; }
+    public Category getCategory() { return category; }
+    public List<String> getAnswers() { return answers; }
+    public String getCorrectAnswer() { return answers.get(correct); }
 
 }
