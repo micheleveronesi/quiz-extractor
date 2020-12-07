@@ -11,24 +11,24 @@ import java.util.Scanner;
  * */
 
 public class CLI {
-    private final Scanner keyboard;
+    private final Input keyboard;
     private boolean fileLoaded;
     private final Controller controller;
 
     public CLI(Controller controller) {
-        keyboard = new Scanner(System.in);
+        keyboard = new Input();
         fileLoaded = false;
         this.controller = controller;
     }
 
-    private void start() {
+    public void start() {
         System.out.println("SNS - Sezione Rosolina");
         System.out.println("Sistema di generazione quiz esame");
         boolean stop = false;
         int choice = -1;
         do {
             printMenu();
-            choice = keyboard.nextInt();
+            choice = keyboard.readInt("Inserisci scelta: ");
             switch (choice) {
                 case 0:
                     stop = true;
@@ -53,9 +53,12 @@ public class CLI {
     }
 
     private void openFile() {
-        System.out.print("Inserisci path al file CSV: ");
-        String filePath = keyboard.nextLine();
+        String filePath = keyboard.readString("Inserisci path al file CSV: ");
         fileLoaded = controller.readFile(filePath);
+        if(fileLoaded)
+            System.out.println("File caricato correttamente");
+        else
+            System.out.println("Errore nel caricamento");
     }
 
 }

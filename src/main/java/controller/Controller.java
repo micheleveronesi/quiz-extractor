@@ -4,6 +4,7 @@ import model.CSVReader;
 import view.CLI;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -21,13 +22,13 @@ public class Controller {
     private final CLI view;
 
     private Controller() {
-        questionByCat = new EnumMap<Category, List<Question>>(Category.class);
+        questionByCat = new EnumMap<>(Category.class);
         view = new CLI(this);
     }
 
     public static Controller start() {
         Controller c = new Controller();
-        c.resetQuestionsEnumSet();
+        c.view.start();
         return c;
     }
 
@@ -36,7 +37,7 @@ public class Controller {
      * @param n -> number of question to be introduced in the answer sheet
      * */
     public List<Question> getSheet(int n) {
-        List<Question> questionSheet = new ArrayList<Question>();
+        List<Question> questionSheet = new ArrayList<>();
         int k = n/(Category.values().length);
         for(Category c : Category.values()) {
             List<Question> l = questionByCat.get(c);
@@ -50,7 +51,7 @@ public class Controller {
     }
 
     public List<Question> getSheet(EnumMap<Category, Integer> numByCat) {
-        List<Question> questionSheet = new ArrayList<Question>();
+        List<Question> questionSheet = new ArrayList<>();
         for(Category c : Category.values()) {
             int k = numByCat.get(c);
             List<Question> l = questionByCat.get(c);
@@ -62,19 +63,21 @@ public class Controller {
         resetQuestionsEnumSet();
         return questionSheet;
     }
+
     public boolean readFile(String filePath) {
         try {
             csvFile = CSVReader.open(filePath);
-        } catch(FileNotFoundException e){
+            questions = csvFile.read();
+            resetQuestionsEnumSet();
+            return true;
+        } catch(IOException e){
             return false;
         }
-        questions = csvFile.read();
-        return true;
     }
 
     private void resetQuestionsEnumSet() {
         for(Category i : Category.values()) {
-            questionByCat.put(i, new ArrayList<Question>());
+            questionByCat.put(i, new ArrayList<>());
         }
 
         for(Question i : questions) {
