@@ -3,7 +3,6 @@ package controller;
 import model.CSVReader;
 import view.CLI;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -22,6 +21,7 @@ public class Controller {
     private final CLI view;
 
     private Controller() {
+        questions = new ArrayList<>();
         questionByCat = new EnumMap<>(Category.class);
         view = new CLI(this);
     }
@@ -31,6 +31,8 @@ public class Controller {
         c.view.start();
         return c;
     }
+
+    public List<Question> getQuestions() { return questions; }
 
     /**
      * return an equally distributed questions sheet
@@ -83,6 +85,10 @@ public class Controller {
         for(Question i : questions) {
             questionByCat.get(i.getCategory()).add(i);
         }
+    }
+
+    public boolean closeCSV() {
+        return csvFile.close();
     }
 
 }

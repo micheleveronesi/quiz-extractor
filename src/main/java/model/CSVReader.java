@@ -3,9 +3,7 @@ import controller.Category;
 import controller.Question;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -32,18 +30,26 @@ public class CSVReader {
         List<Question> questions = new ArrayList<>();
         String line;
         while ((line = reader.readLine()) != null) {
-            String[] current = line.split(",");
+            String[] current = line.split(";");
             Category category = Category.categoryMapper(current[1]);
             String questionText = current[2];
             List<String> answers = new ArrayList<>();
-            for (int i = 3; i <= 6; ++i) {
+            for (int i = 3; i <= 6; ++i)
                 answers.add(current[i]);
-            }
             int correctAnswer = mapCorrectAnswer(current[7]);
             questions.add(new Question(questionText, category, answers, correctAnswer));
         }
 
         return questions;
+    }
+
+    public boolean close(){
+        try {
+            reader.close();
+            return true;
+        } catch(IOException e) {
+            return false;
+        }
     }
 
     private static int mapCorrectAnswer(String toMap) {
@@ -54,7 +60,11 @@ public class CSVReader {
             case 'b': mapped = 1; break;
             case 'c': mapped = 2; break;
             case 'd': mapped = 3; break;
-            default: mapped = -1; break;
+            default:
+                //System.out.println("ERRORE IN MAPPATURA -> letto carattere: " + c);
+                mapped = -1;
+                //System.out.println("CONTROLLA RIGA "+ test);
+                break;
         }
         return mapped;
     }
