@@ -15,11 +15,13 @@ public class CLI {
     private final Input keyboard;
     private boolean fileLoaded;
     private final Controller controller;
+    private final ResultPrinter printer;
 
     public CLI(Controller controller) {
         keyboard = new Input();
         fileLoaded = false;
         this.controller = controller;
+        printer = new ResultPrinter();
     }
 
     public void start() {
@@ -52,7 +54,7 @@ public class CLI {
                         System.out.println("NOT ALLOWED");
                     break;
                 case 3:
-                    // TODO
+                    generaFoglioEquidistribuito();
                     break;
                 case 5:
                     if(fileLoaded) {
@@ -78,7 +80,7 @@ public class CLI {
         System.out.println("1) Apri file CSV");
         if(fileLoaded) {
             System.out.println("2) Stampa tutte le domande a video");
-            System.out.println("3) Estrai quiz in modo predefinito (40 domande equidistribuite tra le categorie)");
+            System.out.println("3) Estrai quiz in modo equidistribuito");
             System.out.println("4) Estrai quiz personalizzato");
             System.out.println("5) Chiudi file caricato");
         }
@@ -110,6 +112,19 @@ public class CLI {
                 ++i;
             }
         }
+    }
+
+    private void generaFoglioEquidistribuito() {
+        int n = -1;
+        boolean sbagliato = false;
+        do {
+            if(sbagliato)
+                System.out.println("NUMERO NON VALIDO, REINSERIRE");
+            n = keyboard.readInt("Quante domande vuoi inserire? ");
+            sbagliato = true;
+        } while(n <= 0);
+        List<Question> sheet = controller.getSheet(n);
+        printer.generateFiles(sheet);
     }
 
 }
