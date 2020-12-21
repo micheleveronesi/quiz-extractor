@@ -12,13 +12,11 @@ import java.util.List;
  * */
 
 public class CLI {
-    private final Input keyboard;
     private boolean fileLoaded;
     private final Controller controller;
     private final ResultPrinter printer;
 
     public CLI(Controller controller) {
-        keyboard = new Input();
         fileLoaded = false;
         this.controller = controller;
         printer = new ResultPrinter();
@@ -31,7 +29,7 @@ public class CLI {
         int choice = -1;
         do {
             printMenu();
-            choice = keyboard.readInt("Inserisci scelta: ");
+            choice = Input.getInstance().readInt("Inserisci scelta: ");
             switch (choice) {
                 case 0:
                     stop = true;
@@ -88,7 +86,7 @@ public class CLI {
     }
 
     private void openFile() {
-        String filePath = keyboard.readString("Inserisci path al file CSV: ");
+        String filePath = Input.getInstance().readString("Inserisci path al file CSV: ");
         fileLoaded = controller.readFile(filePath);
         if(fileLoaded)
             System.out.println("File caricato correttamente");
@@ -120,7 +118,7 @@ public class CLI {
         do {
             if(sbagliato)
                 System.out.println("NUMERO NON VALIDO, REINSERIRE");
-            n = keyboard.readInt("Quante domande vuoi inserire? ");
+            n = Input.getInstance().readInt("Quante domande vuoi inserire? ");
             sbagliato = true;
         } while(n <= 0);
         List<Question> sheet = controller.getSheet(n);

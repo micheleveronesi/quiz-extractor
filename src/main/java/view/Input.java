@@ -6,10 +6,18 @@ public class Input {
 
 	private final InputStreamReader input;
 	private final BufferedReader keyboard;
+	private static Input instance = null;
 
-	public Input() {
+	private Input() {
 		input = new InputStreamReader(System.in);
 		keyboard = new BufferedReader(input);
+	}
+
+	public static Input getInstance() {
+		if (instance == null) {
+			instance = new Input();
+		}
+		return instance;
 	}
 
 	public int readInt (String testo)
