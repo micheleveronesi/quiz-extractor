@@ -1,8 +1,10 @@
 package view;
 
+import controller.Category;
 import controller.Controller;
 import controller.Question;
 
+import java.util.EnumMap;
 import java.util.List;
 
 /**
@@ -25,6 +27,7 @@ public class CLI {
     public void start() {
         System.out.println("SNS - Sezione Rosolina");
         System.out.println("Sistema di generazione quiz esame");
+        openFile(); // precarico subito il file che si chiama domande.csv
         boolean stop = false;
         int choice = -1;
         do {
@@ -43,27 +46,7 @@ public class CLI {
                         }
                     break;
                 case 1:
-                    openFile();
-                    break;
-                case 2:
-                    if(fileLoaded)
-                        printAllQuestions(controller.getQuestions());
-                    else
-                        System.out.println("NOT ALLOWED");
-                    break;
-                case 3:
-                    generaFoglioEquidistribuito();
-                    break;
-                case 5:
-                    if(fileLoaded) {
-                        if (controller.closeCSV()) {
-                            System.out.println("File chiuso con successo");
-                            fileLoaded = false;
-                        } else
-                            System.out.println("ERRORE IN CHIUSURA");
-                    }
-                    else
-                        System.out.println("NOT ALLOWED");
+                    printer.generateFiles(controller.getSheet(getDataAboutCategories()));
                     break;
                 default:
                     System.out.println("SCELTA NON VALIDA");
@@ -75,23 +58,28 @@ public class CLI {
 
     private void printMenu() {
         System.out.println("Opzioni disponibili");
-        System.out.println("1) Apri file CSV");
-        if(fileLoaded) {
-            System.out.println("2) Stampa tutte le domande a video");
-            System.out.println("3) Estrai quiz in modo equidistribuito");
-            System.out.println("4) Estrai quiz personalizzato");
-            System.out.println("5) Chiudi file caricato");
-        }
+        if(fileLoaded)
+            System.out.println("1) Genera foglio esame");
+
         System.out.println("0) Esci");
     }
 
     private void openFile() {
-        String filePath = Input.getInstance().readString("Inserisci path al file CSV: ");
-        fileLoaded = controller.readFile(filePath);
+        fileLoaded = controller.readFile("domande.csv");
         if(fileLoaded)
             System.out.println("File caricato correttamente");
         else
             System.out.println("Errore nel caricamento");
+    }
+
+    private EnumMap<Category, Integer> getDataAboutCategories() {
+        EnumMap<Category, Integer> data = new EnumMap<>(Category.class);
+        for(Category c : Category.values()) {
+            Integer i = Input.getInstance().readInt(
+                    "Inserisci il numero di domande per la categoria " + c.toString() + ": ");
+            data.put(c, i);
+        }
+        return data;
     }
 
     private static void printAllQuestions(List<Question> questions) {
@@ -110,19 +98,6 @@ public class CLI {
                 ++i;
             }
         }
-    }
-
-    private void generaFoglioEquidistribuito() {
-        int n = -1;
-        boolean sbagliato = false;
-        do {
-            if(sbagliato)
-                System.out.println("NUMERO NON VALIDO, REINSERIRE");
-            n = Input.getInstance().readInt("Quante domande vuoi inserire? ");
-            sbagliato = true;
-        } while(n <= 0);
-        List<Question> sheet = controller.getSheet(n);
-        printer.generateFiles(sheet);
     }
 
 }
