@@ -42,7 +42,7 @@ public class ResultPrinter {
             else
                 ready = false;
         } catch(IOException e) {
-            System.out.println("ERRORE NELLA CREAZIOE DEL FILE");
+            System.out.println("ERRORE NELLA CREAZIONE DEL FILE");
             ready = false;
         }
     }
