@@ -82,6 +82,11 @@ public class CLI {
         return data;
     }
 
+    public void segnalaNumeroAlto(Category c, int max){
+        System.out.println("ATTENZIONE: Il numero inserito per la categoria " + c.toString() + " supera il numero di domande disponibili.");
+        System.out.println("Per questa categoria sono disponibili " + max + " domande");
+    }
+
     private static void printAllQuestions(List<Question> questions) {
         if(questions.isEmpty())
             System.out.println("NON CI SONO DOMANDE");

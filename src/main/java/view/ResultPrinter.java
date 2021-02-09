@@ -27,10 +27,14 @@ public class ResultPrinter {
 
     public void generateFiles(List<Question> questions) {
         try {
-            String nomeQuestionario = "questionario.txt", nomeCorrettore = "correttore.txt";
+            String nomeQuestionario = "questionario", nomeCorrettore = "correttore";
             if(numeroQuiz > 0) {
-                nomeQuestionario = nomeQuestionario + numeroQuiz + ".txt";
-                nomeCorrettore = nomeCorrettore + numeroQuiz + ".txt";
+                nomeQuestionario += numeroQuiz + ".txt";
+                nomeCorrettore += numeroQuiz + ".txt";
+            }
+            else{
+                nomeQuestionario += ".txt";
+                nomeCorrettore += ".txt";
             }
             questionario = new File(nomeQuestionario);
             correttore = new File(nomeCorrettore);

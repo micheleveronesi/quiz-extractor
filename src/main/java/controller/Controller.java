@@ -57,9 +57,14 @@ public class Controller {
         for(Category c : Category.values()) {
             int k = numByCat.get(c);
             List<Question> l = questionByCat.get(c);
-            for(int i = 0; i<k && !l.isEmpty(); ++i) {
+            int max = l.size();
+            int i = 0;
+            for(i = 0; i<k && !l.isEmpty(); ++i) {
                 int rand = (int) (Math.random() * l.size());
                 questionSheet.add(l.remove(rand));
+            }
+            if(l.isEmpty() && i<k) {
+                view.segnalaNumeroAlto(c, max);
             }
         }
         resetQuestionsEnumSet();
