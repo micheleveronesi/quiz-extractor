@@ -58,7 +58,7 @@ public class Controller {
             int k = numByCat.get(c);
             List<Question> l = questionByCat.get(c);
             int max = l.size();
-            int i = 0;
+            int i;
             for(i = 0; i<k && !l.isEmpty(); ++i) {
                 int rand = (int) (Math.random() * l.size());
                 questionSheet.add(l.remove(rand));
